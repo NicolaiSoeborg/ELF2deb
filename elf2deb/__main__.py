@@ -28,6 +28,11 @@ def get_copyright(args):
     license_txt = license_txt.replace("[yyyy]", year)
     license_txt = license_txt.replace("[name of copyright owner]", fullname)
 
+    # GNU
+    license_txt = license_txt.replace("<year>", year)
+    license_txt = license_txt.replace("<name of author>", fullname)
+    license_txt = license_txt.replace("<program>", args.package_name)
+
     return license_txt
 
 

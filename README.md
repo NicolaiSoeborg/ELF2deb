@@ -1,8 +1,9 @@
 # ELF2deb
+<img align="right" src="https://raw.githubusercontent.com/NicolaiSoeborg/ELF2deb/master/.github/logo-small.png" alt="logo" />
 
 Convert any single or multiple executable file(s) to deb package
 
-I.e. this is a AppImage|ELF|executable script|etc to `.deb` script.
+I.e. this is script to convert *AppImage|ELF|executable script* to `.deb`.
 
 ## Setup
 
