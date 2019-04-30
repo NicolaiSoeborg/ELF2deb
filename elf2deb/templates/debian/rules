@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+
+.PHONY: override_dh_strip
+override_dh_strip:
+	echo "Skipping dh_strip as it will destroy AppImages"
+
+%:
+	dh $@
+
