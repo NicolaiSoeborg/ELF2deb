@@ -1,18 +1,20 @@
-# ELF2deb
+# ELF*2*deb
 <img align="right" src="https://raw.githubusercontent.com/NicolaiSoeborg/ELF2deb/master/.github/logo-small.png" alt="logo" />
 
-Convert any single or multiple executable file(s) to deb package
+Convert any single (or multiple) executable file(s) to deb-package.
 
 I.e. this is script to convert *AppImage|ELF|executable script* to `.deb`.
 
+The script will place the binary file in `/usr/bin/`.
+
 ## Setup
 
-You want to setup `$DEBEMAIL` and `$DEBFULLNAME` for the deb tools to work properly:
+You want to setup `DEBEMAIL` and `DEBFULLNAME` for the *deb* tools to work properly:
 
 ```bash
 $ cat >>~/.bashrc <<EOF
-DEBEMAIL="your.email.address@example.org"
-DEBFULLNAME="Firstname Lastname"
+DEBEMAIL="email@example.org"
+DEBFULLNAME="John Doe"
 export DEBEMAIL DEBFULLNAME
 EOF
 $ . ~/.bashrc
@@ -48,4 +50,4 @@ You can safely ignore the following warnings from lintian:
 
  * `binary-without-manpage`
 
-(you will probably get a longer list of errors and warnings)
+(you will probably get a longer list of errors and warnings, no worries)

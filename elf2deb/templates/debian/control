@@ -10,8 +10,9 @@ Package: {package_name}
 Architecture: any
 Multi-Arch: foreign
 Depends: ${{misc:Depends}}, ${{shlibs:Depends}}, {dependencies}
-Description: TODO FIRST LINE
+Description: FIRST LINE HERE
  LONG DESC HERE LONG DESC HERE LONG DESC HERE LONG DESC HERE
  LONG DESC HERE LONG DESC HERE LONG DESC HERE LONG DESC HERE
- LONG DESC HERE LONG DESC HERE LONG DESC HERE LONG DESC HERE
+ .
+ {package_name} has been build using ELF2deb.
 

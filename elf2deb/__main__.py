@@ -1,5 +1,6 @@
 import os
 import shutil
+from subprocess import run, DEVNULL
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -59,8 +60,9 @@ def main():
     )
 
     license_group = parser.add_argument_group("license info")
-    license_group.add_argument(
-        "--license", default=None, help="TODO",
+    license_txt = license_group.add_mutually_exclusive_group()
+    license_txt.add_argument(
+        "--license", default=None, help="Select a standard license.",
         choices=[
             "MIT",
             "LGPL-3.0",
@@ -71,8 +73,9 @@ def main():
             "GPL-3.0",
         ],
     )
-    license_group.add_argument("--license_year", default=None, help="TODO")
-    license_group.add_argument("--license_holder", default=None, help="TODO")
+    license_txt.add_argument('--license_file', type=argparse.FileType('r'), help="... or use a LICENSE text file."),
+    license_group.add_argument("--license_year", default=None, help="If using a standard license: year")
+    license_group.add_argument("--license_holder", default=None, help="If using a standard license: owner")
 
     parser.add_argument(
         "binary_files", help="The binaries you want to package.", nargs="+"
@@ -90,25 +93,13 @@ def main():
             shutil.rmtree(str(package_dir))
     package_dir.mkdir(exist_ok=True)
 
-    print("Copying files... ", end="", flush=True)
-    binary_files = []
-    for i, binary in enumerate(args.binary_files):
-        shutil.copy(binary, str(package_dir / os.path.basename(binary)))
-        # TODO: doest exist yet
-        # if i > 0:
-        #    (package_dir / 'Makefile').write_text("\tcp {} $(DESTDIR)$(PREFIX)/bin/".format(binary))
-
-        binary_files.append(os.path.basename(binary))
-    args.binary_files = binary_files
-    print("done!")
-
-    # print("Copying templates... ", end='', flush=True)
+    print("Copying templates... ", end='', flush=True)
     me = ZipFile(os.path.dirname(__file__), "r")
     for template in me.filelist:
         if template.filename == os.path.basename(__file__):
             continue  # skip this file
 
-        target_filename = template.filename[len(TEMPLATE_DIR) :]
+        target_filename = template.filename[len(TEMPLATE_DIR):]
         if template.is_dir():
             (package_dir / target_filename).mkdir(exist_ok=True)
         else:
@@ -116,16 +107,29 @@ def main():
             (package_dir / target_filename).write_text(date)
 
     if args.license is not None:
-        copyright_file = package_dir / "debian/copyright"
+        copyright_file = package_dir / 'debian/copyright'
         copyright_file.write_text(get_copyright(args))
+    elif args.license_file is not None:
+        copyright_file = package_dir / 'debian/copyright'
+        copyright_file.write_text(args.license_file.read())
     print("done!")
 
+    print("Copying files... ", end="", flush=True)
+    makefile = open(str(package_dir / 'Makefile'), 'at')
+    for i, binary in enumerate(args.binary_files):
+        shutil.copy(binary, str(package_dir / os.path.basename(binary)))
+        if i > 0:
+            makefile.write('\tcp {} $(DESTDIR)$(PREFIX)/bin/\n'.format(binary))
+    makefile.close()
+    print("done!")
+
+    run(['dch', '--create', '--empty', '--distribution', 'unstable', '--package', args.package_name, '--newversion', args.package_version], cwd=str(package_dir))
+    run(['dch', '--append', 'Empty changelog'], stderr=DEVNULL, cwd=str(package_dir))
+    
     print("Run:")
-    print("cd {}".format(package_dir))
-    print("dch --create --empty --distribution unstable --package {package_name} --newversion {package_version}".format(**vars(args)))
-    print("dch --append 'Empty changelog' 2>/dev/null")
-    print("vim debian/control  # change description, dont add empty lines")
-    print("debuild -us -uc")
+    print(" * cd {}".format(package_dir))
+    print(" * vim debian/control  # change description, dont add empty lines")
+    print(" * debuild -us -uc  # remove -us -uc if you want to sign the deb file")
 
 
 if __name__ == "__main__":

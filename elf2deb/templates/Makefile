@@ -12,4 +12,3 @@ clean :
 install: 
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp {binary_files[0]} $(DESTDIR)$(PREFIX)/bin/
-
