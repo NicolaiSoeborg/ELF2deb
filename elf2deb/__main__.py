@@ -4,7 +4,7 @@ from subprocess import run, DEVNULL
 from pathlib import Path
 from zipfile import ZipFile
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 TEMPLATE_DIR = "templates/"
 
 
@@ -112,6 +112,11 @@ def main():
     elif args.license_file is not None:
         copyright_file = package_dir / 'debian/copyright'
         copyright_file.write_text(args.license_file.read())
+
+    # Make debian/rules executable:
+    mode = os.stat(str(package_dir / 'debian/rules')).st_mode
+    mode |= (mode & 0o444) >> 2  # copy R bits to X
+    os.chmod(str(package_dir / 'debian/rules'), mode)
     print("done!")
 
     print("Copying files... ", end="", flush=True)
@@ -124,7 +129,7 @@ def main():
     print("done!")
 
     run(['dch', '--create', '--empty', '--distribution', 'unstable', '--package', args.package_name, '--newversion', args.package_version], cwd=str(package_dir))
-    run(['dch', '--append', 'Empty changelog'], stderr=DEVNULL, cwd=str(package_dir))
+    run(['dch', '--append', 'Packaged using ELF2deb v{}'.format(__version__)], stderr=DEVNULL, cwd=str(package_dir))
     
     print("Run:")
     print(" * cd {}".format(package_dir))

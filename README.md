@@ -25,11 +25,9 @@ $ . ~/.bashrc
 In this example I'm first downloading the [skaffold](https://skaffold.dev/) binary and packing it as a `.deb` file:
 
 ```bash
-$ curl -Lo ../skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-$ ./elf2deb.pyz --license apache-2.0 --license_year 2018 --license_holder "The Skaffold Authors" --package_name skaffold --package_version 0.28.0 --homepage "https://skaffold.dev/" ../skaffold
+$ curl -Lo ./skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+$ ./elf2deb.pyz --license apache-2.0 --license_year 2018 --license_holder "The Skaffold Authors" --package_name skaffold --package_version 0.28.0 --homepage "https://skaffold.dev/" ./skaffold
 $ cd skaffold-0.28.0
-$ dch --create --empty --distribution unstable --package skaffold --newversion 0.28.0
-$ dch --append 'Empty changelog' 2>/dev/null
 $ vim debian/control  # add description
 $ debuild -us -uc
 [... lots of debuild output ...]

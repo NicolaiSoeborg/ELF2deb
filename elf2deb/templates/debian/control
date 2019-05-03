@@ -1,6 +1,6 @@
 Source: {package_name}
 Section: misc
-Priority: extra
+Priority: optional
 Maintainer: {author_name} <{author_mail}>
 Build-Depends: debhelper (>=9)
 Standards-Version: 3.9.7
