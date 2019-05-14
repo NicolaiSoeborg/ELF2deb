@@ -26,8 +26,9 @@ In this example I'm first downloading the [skaffold](https://skaffold.dev/) bina
 
 ```bash
 $ curl -Lo ./skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-$ ./elf2deb.pyz --license apache-2.0 --license_year 2018 --license_holder "The Skaffold Authors" --package_name skaffold --package_version 0.28.0 --homepage "https://skaffold.dev/" ./skaffold
-$ cd skaffold-0.28.0
+$ ./elf2deb.pyz --license apache-2.0 --license_year 2018 --license_holder "The Skaffold Authors" \
+> --package_name skaffold --package_version 0.28.0 --homepage "https://skaffold.dev/" ./skaffold
+$ cd skaffold-0.28.0/
 $ vim debian/control  # add description
 $ debuild -us -uc
 [... lots of debuild output ...]
@@ -35,10 +36,24 @@ $ cd ../
 $ sudo dpkg -i skaffold_0.28.0_amd64.deb
 ```
 
+## Arguments
+```
+usage: ./ELF2deb.pyz [-h] [--version]
+                     --package_name PACKAGE_NAME
+                     --package_version PACKAGE_VERSION
+                     [--homepage HOMEPAGE]
+                     [--dependencies DEPENDENCIES]
+                     [--license {MIT,LGPL-3.0,MPL-2.0,AGPL-3.0,unlicense,apache-2.0,GPL-3.0} | --license_file LICENSE_FILE]
+                     [--license_year LICENSE_YEAR]
+                     [--license_holder LICENSE_HOLDER]
+                     binary_file [binary_files ...]
+```
+
 ## Common warnings
 
 If you are running Ubuntu, you might get `E: bad-distribution-in-changes-file unstable`.
 In this case edit `debian/changelog` and change `unstable` to your distributions codename (find it by running `lsb_release -c`).
+Then run `debuild -us -uc` from source directory, to recompile the `.deb`.
 
 If you are missing the `dch`-tool, then run: `sudo apt install --no-install-recommends devscripts libdistro-info-perl`.
 

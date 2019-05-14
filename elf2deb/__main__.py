@@ -53,7 +53,7 @@ def main():
         "--package_version", required=True, help="The version of the package"
     )
     package_group.add_argument(
-        "--homepage", default="https://example.com/", help="The homepage of the package"
+        "--homepage", help="The webpage of the package"
     )
     package_group.add_argument(
         "--dependencies", default="", help="Dependencies specified in the deb package"
@@ -85,6 +85,7 @@ def main():
 
     args.author_name = os.getenv("DEBFULLNAME")
     args.author_mail = os.getenv("DEBEMAIL")
+    args.homepage = 'Homepage: {}'.format(args.homepage) if args.homepage else ''
 
     # Create app dir:
     package_dir = Path("{package_name}-{package_version}".format(**vars(args)))

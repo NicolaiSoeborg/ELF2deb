@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: {author_name} <{author_mail}>
 Build-Depends: debhelper (>=9)
 Standards-Version: 3.9.7
-Homepage: {homepage}
+{homepage}
 
 Package: {package_name}
 Architecture: any
@@ -15,4 +15,3 @@ Description: FIRST LINE HERE
  LONG DESC HERE LONG DESC HERE LONG DESC HERE LONG DESC HERE
  .
  {package_name} has been build using ELF2deb.
-

@@ -7,7 +7,7 @@ elf2deb.pyz:
 
 .PHONY: test
 test: clean elf2deb.pyz
-	./elf2deb.pyz --package_name elf2deb --package_version `./elf2deb.pyz --version | cut -d' ' -f2` --license_file LICENSE --homepage 'https://xn--sb-lka.org/' --dependencies 'python3' ./elf2deb.pyz
+	./elf2deb.pyz --package_name elf2deb --package_version `./elf2deb.pyz --version | cut -d' ' -f2` --license_file LICENSE --dependencies 'python3' ./elf2deb.pyz
 	cd elf2deb-`./elf2deb.pyz --version | cut -d' ' -f2` && debuild -us -uc
 	@echo -n "\nDone building. Now testing output deb file:\n"
 	dpkg-deb --info elf2deb_*.deb
@@ -19,7 +19,7 @@ test2: clean elf2deb.pyz
 	cd skaffold-0.28.0 && debuild -us -uc
 	@echo -n "\nDone building. Now testing output deb file:\n"
 	dpkg-deb --info skaffold_0.28.0*.deb
-	rm -f skaffold*
+	# rm -rf skaffold*
 
 .PHONY: clean
 clean: 
