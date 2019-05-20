@@ -5,6 +5,13 @@ all: elf2deb.pyz
 elf2deb.pyz: 
 	python3 -m zipapp elf2deb --python="/usr/bin/env python3"
 
+.PHONY: pip
+pip: elf2deb.pyz
+	# TODO: elf2deb.pyz is specified in MANIFEST.in, but needs to be in 'elf2deb/' folder, so use this ugly hack:
+	mv elf2deb.pyz elf2deb/elf2deb.pyz
+	python3 setup.py sdist
+	rm elf2deb/elf2deb.pyz
+
 .PHONY: test
 test: clean elf2deb.pyz
 	./elf2deb.pyz --package_name elf2deb --package_version `./elf2deb.pyz --version | cut -d' ' -f2` --license_file LICENSE --dependencies 'python3' ./elf2deb.pyz
@@ -26,3 +33,5 @@ clean:
 	@rm -f elf2deb.pyz
 	@rm -rf elf2deb-*.*
 	@rm -rf elf2deb_*.*
+	@rm -rf dist/
+	@rm -rf ELF2deb.egg-info/

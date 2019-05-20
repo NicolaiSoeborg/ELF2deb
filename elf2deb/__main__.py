@@ -4,9 +4,8 @@ from subprocess import run, DEVNULL
 from pathlib import Path
 from zipfile import ZipFile
 
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 TEMPLATE_DIR = "templates/"
-
 
 def get_copyright(args):
     import requests
@@ -56,7 +55,7 @@ def main():
         "--homepage", help="The webpage of the package"
     )
     package_group.add_argument(
-        "--dependencies", default="", help="Dependencies specified in the deb package"
+        "--dependencies", default="", help="Dependencies specified in the deb package (comma seperated)"
     )
 
     license_group = parser.add_argument_group("license info")
@@ -95,7 +94,10 @@ def main():
     package_dir.mkdir(exist_ok=True)
 
     print("Copying templates... ", end='', flush=True)
-    me = ZipFile(os.path.dirname(__file__), "r")
+    try:
+        me = ZipFile(os.path.dirname(__file__), "r")
+    except:
+        me = ZipFile(os.path.dirname(__file__) + '/elf2deb.pyz' , "r")
     for template in me.filelist:
         if template.filename == os.path.basename(__file__):
             continue  # skip this file

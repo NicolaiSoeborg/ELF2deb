@@ -1,0 +1,3 @@
+# List of file/folders to include in the pypi package:
+include elf2deb/elf2deb.pyz
+recursive-include elf2deb/templates *
