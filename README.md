@@ -109,4 +109,90 @@ The advantages of ELF*2*deb is;
 
  * can be installed using `pip install elf2deb` or used a as a standalone executable `./elf2deb.pyz`
 
- * simple, small size (7 kB), and few dependencies (python3 and requests)
+ * simple, small size (< 10 kB), and few dependencies: `>= python3.5` (+ `requests` if need to download a license file)
+
+## More examples (interactive!)
+
+In version 1.2.0 a interactive menu was added to ELF*2*deb:
+
+```bash
+$ git clone https://github.com/NicolaiSoeborg/ELF2deb.git && cd ELF2deb/
+$ make  # to make 'elf2deb.pyz' (or use pip to install globally, or carry/copy elf2deb.pyz around)
+$ ./elf2deb.pyz elf2deb.pyz  # package 'elf2deb.pyz' using elf2deb (very meta!)
+Package info:
+author_mail: git@xn--sb-lka.org
+author_name: Nicolai Søborg
+binary_files: ['elf2deb.pyz']
+dependencies: 
+homepage: None
+license: None
+license_file: <_io.TextIOWrapper name='/.../ELF2deb/LICENSE' mode='r' encoding='UTF-8'>
+license_holder: None
+license_year: None
+package_name: ELF2deb
+package_version: 0.0.1
+==> Does this look correct? (y/n/q): n
+
+Properties:
+[1] author_mail
+[2] author_name
+[3] binary_files
+[4] dependencies
+[5] homepage
+[6] license
+[7] license_file
+[8] license_holder
+[9] license_year
+[10] package_name
+[11] package_version
+==> Which property to change? (1..11): 4
+==> Which value should dependencies be changed to? python3, python3-requests
+
+Package info:
+author_mail: git@xn--sb-lka.org
+author_name: Nicolai Søborg
+binary_files: ['elf2deb.pyz']
+dependencies: python3, python3-requests
+homepage: None
+license: None
+license_file: <_io.TextIOWrapper name='/home/nsq/pakker/test/ELF2deb/LICENSE' mode='r' encoding='UTF-8'>
+license_holder: None
+license_year: None
+package_name: ELF2deb
+package_version: 0.0.1
+==> Does this look correct? (y/n/q): n
+[...]
+==> Which value should package_version be changed to? 1.2.0
+[...]
+==> Does this look correct? (y/n/q): y
+Copying templates... done!
+Copying files... done!
+Run:
+ * cd elf2deb-1.2.0
+ * vim debian/control  # change description, dont add empty lines
+ * debuild -us -uc  # remove -us -uc if you want to sign the deb file
+
+$ cd elf2deb-1.2.0
+$ vim debian/control
+$ debuild -us -uc
+[...]
+dpkg-deb: building package 'elf2deb' in '../elf2deb_1.2.0_amd64.deb'.
+
+$ dpkg-deb --info ../elf2deb_1.2.0_amd64.deb
+ new Debian package, version 2.0.
+ size 5100 bytes: control archive=624 bytes.
+     383 bytes,    12 lines      control
+     189 bytes,     3 lines      md5sums
+ Package: elf2deb
+ Version: 1.2.0
+ Architecture: amd64
+ Maintainer: Nicolai Søborg <git@xn--sb-lka.org>
+ Installed-Size: 20
+ Depends: python3, python3-requests
+ Section: misc
+ Priority: optional
+ Multi-Arch: foreign
+ Description: tool to easily package any binary to a deb file
+  ELF2deb makes it easy to package simple binaries to a deb file
+  to help deploy files across debian environments.
+```
