@@ -9,7 +9,7 @@ The script will place the binary file(s) in `/usr/bin/`.
 
 ## Setup
 
-You want to setup `DEBEMAIL` and `DEBFULLNAME` for the *deb* tools to work properly:
+You want to set `DEBEMAIL` and `DEBFULLNAME` for the *deb tools* to work properly:
 
 ```bash
 $ cat >>~/.bashrc <<EOF
@@ -109,7 +109,9 @@ The advantages of ELF*2*deb is;
 
  * can be installed using `pip install elf2deb` or used a as a standalone executable `./elf2deb.pyz`
 
- * simple, small size (< 10 kB), and few dependencies: `>= python3.5` (+ `requests` if need to download a license file)
+ * simple, small size (< 10 kB), and few dependencies:
+   - `>= python3.5` (+ `requests` if need to download a license file).
+   - `debhelper` and `devscripts` (`apt install --no-install-recommends debhelper devscripts`).
 
 ## More examples (interactive!)
 
