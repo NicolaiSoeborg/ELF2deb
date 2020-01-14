@@ -5,7 +5,7 @@ from subprocess import run, DEVNULL
 from pathlib import Path
 from zipfile import ZipFile
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 TEMPLATE_DIR = "templates/"
 
 def main():
@@ -79,7 +79,7 @@ def get_copyright(args):
         exit(1)
     license_txt = r.json()["body"]
 
-    year = args.license_year or datetime.now().year
+    year = args.license_year or str(datetime.now().year)
     fullname = args.license_holder or args.author_name
 
     # MIT
